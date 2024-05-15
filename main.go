@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log" // for files
+	"os" // for files
 )
 
 func main() {
@@ -58,8 +60,19 @@ func main() {
 	}
 }
 
+func getRecipeList() {
+	fileName := "recipes.txt"
+	data, err := os.ReadFile("test.txt")
+	if err != nil {
+		log.Panicf("failed reading data from file: %s", err)
+	}
+	fmt.Printf("\nFile Name: %s", fileName)
+	fmt.Printf("\nSize: %d bytes", len(data))
+	fmt.Printf("\nData: %s", data)
+}
+
 func printRecipe(r Recipe) {
-	fmt.Printf("\n%v\nBake for %v minutes at %v F.\nInredients:\n", r.name, r.bakingTime, r.bakingTemp)
+	fmt.Printf("\n%v\nBake time: %v minutes\nBake temp: %v F\nInredients:\n", r.name, r.bakingTime, r.bakingTemp)
 	for i := 0; i < len(r.ingredientList); i++ {
 		fmt.Print(" - ")
 		printIngredient(r.ingredientList[i])
