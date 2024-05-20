@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bufio" // for files
 	"fmt"
 	"log" // for files
 	"os" // for files
 )
 
 func main() {
+	getRecipeList()
 	var recipeList []Recipe
 	fmt.Println("Welcome to the Recipe Book!")
 	choice := 10;
@@ -61,14 +63,18 @@ func main() {
 }
 
 func getRecipeList() {
-	fileName := "recipes.txt"
-	data, err := os.ReadFile("test.txt")
+	file, err := os.Open("recipes.txt")
 	if err != nil {
-		log.Panicf("failed reading data from file: %s", err)
+		log.Fatalf("failed to open:", err)
 	}
-	fmt.Printf("\nFile Name: %s", fileName)
-	fmt.Printf("\nSize: %d bytes", len(data))
-	fmt.Printf("\nData: %s", data)
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
+	var text []string
+	for scanner.Scan() {
+		text = append(text, scanner.Text())
+	}
+	file.Close()
+	fmt.Println(text)
 }
 
 func printRecipe(r Recipe) {
