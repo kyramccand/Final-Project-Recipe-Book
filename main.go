@@ -80,20 +80,24 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 			rec.name = strings.Split(scanner.Text(), "Name: ")[1]
 			rList = append(rList, rec)
 		} else if strings.Index(scanner.Text(), "Bake temp: ") != -1 {
-			
 			bTempString := strings.Split(scanner.Text(), "Bake temp: ")[1]
-			fmt.Println(bTempString, "#")
 			bTemp, err := strconv.Atoi(bTempString)
 			if err != nil {
 				fmt.Println("failed to convert string to int")
 			}
 			rList[len(rList) - 1].bakingTemp = int(bTemp)
+		} else if strings.Index(scanner.Text(), "Bake time: ") != -1 {
+			bTimeString := strings.Split(scanner.Text(), "Bake time: ")[1]
+			bTime, err := strconv.Atoi(bTimeString)
+			if err != nil {
+				fmt.Println("failed to convert string to int")
+			}
+			rList[len(rList) - 1].bakingTime = int(bTime)
 		}
 		text = nil // clears the array
 		text = append(text, scanner.Text()) // appends the next line
 	}
 	file.Close()
-	
 	return rList
 }
 
