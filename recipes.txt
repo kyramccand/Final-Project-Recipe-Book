@@ -1,5 +1,5 @@
 Name: Bread
-Bake time: 40 minutes
-Bake temp: 350 F
+Bake time: 40
+Bake temp: 350
 Ingredients:
  - 4 tbsp butter

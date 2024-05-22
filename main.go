@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"log" // for files
 	"os" // for files
+	 "strings"
+	 "strconv" // for converting string to int
 )
 
 func main() {
-	getRecipeList()
-	var recipeList []Recipe
+	recipeList := getRecipeList()
+	fmt.Println(recipeList)
 	fmt.Println("Welcome to the Recipe Book!")
 	choice := 10;
 	for choice != 0 {
@@ -62,19 +64,37 @@ func main() {
 	}
 }
 
-func getRecipeList() {
+func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.org/how-to-read-a-file-line-by-line-to-string-in-golang/
+	var rList []Recipe
 	file, err := os.Open("recipes.txt")
 	if err != nil {
-		log.Fatalf("failed to open:", err)
+		log.Fatalf("failed to open: %v", err)
 	}
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
 	var text []string
 	for scanner.Scan() {
-		text = append(text, scanner.Text())
+		fmt.Println(text)
+		if strings.Index(scanner.Text(), "Name: ") != -1 {
+			var rec Recipe
+			rec.name = strings.Split(scanner.Text(), "Name: ")[1]
+			rList = append(rList, rec)
+		} else if strings.Index(scanner.Text(), "Bake temp: ") != -1 {
+			
+			bTempString := strings.Split(scanner.Text(), "Bake temp: ")[1]
+			fmt.Println(bTempString, "#")
+			bTemp, err := strconv.Atoi(bTempString)
+			if err != nil {
+				fmt.Println("failed to convert string to int")
+			}
+			rList[len(rList) - 1].bakingTemp = int(bTemp)
+		}
+		text = nil // clears the array
+		text = append(text, scanner.Text()) // appends the next line
 	}
 	file.Close()
-	fmt.Println(text)
+	
+	return rList
 }
 
 func printRecipe(r Recipe) {
