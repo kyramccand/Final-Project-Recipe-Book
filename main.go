@@ -93,6 +93,9 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 				fmt.Println("failed to convert string to int")
 			}
 			rList[len(rList) - 1].bakingTime = int(bTime)
+		} else if strings.Index(scanner.Text(), " - ") != -1 {
+			ingredientString := strings.Split(scanner.Text(), " - ")[1]
+			rList[len(rList) - 1].ingredientList = append(rList[len(rList) - 1].ingredientList, toIngredient(ingredientString))
 		}
 		text = nil // clears the array
 		text = append(text, scanner.Text()) // appends the next line
@@ -111,6 +114,23 @@ func printRecipe(r Recipe) {
 
 func printIngredient(i Ingredient) {
 	fmt.Println(i.measure, i.measureUnit, i.name)
+}
+
+func toIngredient(iString string) Ingredient {
+	var i Ingredient
+	list := strings.Split(iString, " ")
+	m, err := strconv.ParseFloat(list[0], 32)
+	if err != nil {
+		fmt.Println("failed to convert string to int")
+	}
+	i.measure = float32(m)
+	i.measureUnit = list[1]
+	i.name = list[2]
+	for word := 3; word < len(list); word++ {
+		i.name = i.name + " " + list[word]
+	}
+	
+	return i
 }
 
 type Ingredient struct {
