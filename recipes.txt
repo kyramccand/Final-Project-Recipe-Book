@@ -1,18 +1,15 @@
 Name: Bread
-Bake time: 40
+Bake time: 0
 Bake temp: 350
-Ingredients:
+Inredients:
  - 4 tbsp butter
  - 8 cup flour
  - 2 packet yeast
  - 1 cup cold water
  - 2 tbsp sugar
-
- Name: Cheescake
- Bake time: 40
- Bake temp: 350
- Ingredients:
-  - 16 oz cream cheese
-  - 0.5 cup flour
-  - 2 tbsp sugar
- 
+Name: Cheescake
+Bake time: 55
+Bake temp: 350
+Inredients:
+ - 16 oz creamcheese
+ - 1 cup cream

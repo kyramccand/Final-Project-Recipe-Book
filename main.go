@@ -57,6 +57,7 @@ func main() {
 			case 3:
 			case 4:
 			case 0: {
+				writeRecipesToFile(recipeList)
 				fmt.Println("Thank you for using my program.")
 			}
 		}
@@ -102,16 +103,17 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 	return rList
 }
 
-func recipeToString(r Recipe) {
-	s := r.name + "\nBake time:" + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
+func recipeToString(r Recipe) string {
+	s := "Name: " + r.name + "\nBake time: " + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
 	for i := 0; i < len(r.ingredientList); i++ {
-		s = s + "\n - " + ingredientToString(r.ingredientList[i])
+		s = s + " - " + ingredientToString(r.ingredientList[i])
 	}
+	return s
 }
 
 func ingredientToString(i Ingredient) string {
 	var s string
-	s = strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name
+	s = strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name + "\n"
 	return s
 }
 
@@ -144,9 +146,20 @@ func toIngredient(iString string) Ingredient {
 }
 
 func writeRecipesToFile(rList []Recipe) {
-	file, err := os.Create("recipes.txt")
-	if err != nil {
-		fmt.Println(err)
+	file, err1 := os.Create("recipes.txt")
+	if err1 != nil {
+		fmt.Println(err1)
+	}
+	for i := 0; i < len(rList); i++ {
+		l, err2 := file.WriteString(recipeToString(rList[i]))
+		if err2 != nil {
+			fmt.Println(l)
+			fmt.Println(err2)
+		}
+	}
+	err3 := file.Close()
+	if err3 != nil {
+		fmt.Println(err3)
 	}
 }
 
