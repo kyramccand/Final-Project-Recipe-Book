@@ -25,8 +25,11 @@ func main() {
 			case 2: {
 				var newRecipe Recipe
 				fmt.Print("Enter the name of the baked good: ")
-				var n string
-				fmt.Scanf("%s", &n)
+				reader := bufio.NewReader(os.Stdin)
+				n, err := reader.ReadString('\n')
+				if err != nil {
+					fmt.Println(err)
+				}
 				newRecipe.name = n
 				fmt.Println("Enter the ingredients (measurement unit ingredient):");
 				ingredientCount := 1;
@@ -35,9 +38,14 @@ func main() {
 					var u string
 					var i string
 					fmt.Printf("%v) ", ingredientCount)
-					fmt.Scanf("%g %s %s", &m, &u, &i)
+					fmt.Scanf("%g %s", &m, &u)
+					reader := bufio.NewReader(os.Stdin)
+					i, err := reader.ReadString('\n')
+					if err != nil {
+						fmt.Println(err)
+					}
 					ingr := Ingredient{i, m, u}
-					if ingr.name != "" {
+					if ingr.name != "\n" {
 						ingredientCount++;
 							newRecipe.ingredientList = append(newRecipe.ingredientList, ingr)
 					} else {
