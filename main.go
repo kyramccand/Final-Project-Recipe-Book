@@ -11,9 +11,8 @@ import (
 
 func main() {
 	recipeList := getRecipeList()
-	fmt.Println(recipeList)
 	fmt.Println("Welcome to the Recipe Book!")
-	choice := 10;
+	choice := 10
 	for choice != 0 {
 		fmt.Print("\nHere are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) See what you can bake\n0) Quit\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
@@ -74,7 +73,6 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 	scanner.Split(bufio.ScanLines)
 	var text []string
 	for scanner.Scan() {
-		fmt.Println(text)
 		if strings.Index(scanner.Text(), "Name: ") != -1 {
 			var rec Recipe
 			rec.name = strings.Split(scanner.Text(), "Name: ")[1]
@@ -104,6 +102,19 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 	return rList
 }
 
+func recipeToString(r Recipe) {
+	s := r.name + "\nBake time:" + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
+	for i := 0; i < len(r.ingredientList); i++ {
+		s = s + "\n - " + ingredientToString(r.ingredientList[i])
+	}
+}
+
+func ingredientToString(i Ingredient) string {
+	var s string
+	s = strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name
+	return s
+}
+
 func printRecipe(r Recipe) {
 	fmt.Printf("\n%v\nBake time: %v minutes\nBake temp: %v F\nInredients:\n", r.name, r.bakingTime, r.bakingTemp)
 	for i := 0; i < len(r.ingredientList); i++ {
@@ -129,8 +140,14 @@ func toIngredient(iString string) Ingredient {
 	for word := 3; word < len(list); word++ {
 		i.name = i.name + " " + list[word]
 	}
-	
 	return i
+}
+
+func writeRecipesToFile(rList []Recipe) {
+	file, err := os.Create("recipes.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 type Ingredient struct {
