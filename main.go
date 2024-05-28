@@ -18,6 +18,7 @@ func main() {
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
+			        // can use range here too
 				for i := 0; i < len(recipeList); i++ {
 					printRecipe(recipeList[i])
 				}
@@ -33,6 +34,7 @@ func main() {
 				newRecipe.name = n
 				fmt.Println("Enter the ingredients (measurement unit ingredient):");
 				ingredientCount := 1;
+				// cool, this is like a while(true) { ... }!
 				for {
 					var m float32
 					var u string
@@ -99,6 +101,8 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 			if err != nil {
 				fmt.Println("failed to convert string to int")
 			}
+			// hmm how come the cast to int?  isn't bTime already an int since it came
+			// out of strconv.Atoi?
 			rList[len(rList) - 1].bakingTime = int(bTime)
 		} else if strings.Index(scanner.Text(), " - ") != -1 {
 			ingredientString := strings.Split(scanner.Text(), " - ")[1]
@@ -112,7 +116,9 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 }
 
 func recipeToString(r Recipe) string {
+        // include the time units in the string too!
 	s := "Name: " + r.name + "\nBake time: " + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
+	// you could use the "range" function to enumerate i and each ingredient at once: https://stackoverflow.com/questions/7782411/is-there-a-foreach-loop-in-go
 	for i := 0; i < len(r.ingredientList); i++ {
 		s = s + " - " + ingredientToString(r.ingredientList[i])
 	}
@@ -120,6 +126,8 @@ func recipeToString(r Recipe) string {
 }
 
 func ingredientToString(i Ingredient) string {
+        // curious you have to declare the type of s, but other places the type inference
+	// figures it out:
 	var s string
 	s = strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name + "\n"
 	return s
@@ -156,6 +164,8 @@ func toIngredient(iString string) Ingredient {
 func writeRecipesToFile(rList []Recipe) {
 	file, err1 := os.Create("recipes.txt")
 	if err1 != nil {
+	        // does golang have exceptions?  might be better to use exceptions?
+		// oh no I just checked and indeed golang has no exceptions, cool
 		fmt.Println(err1)
 	}
 	for i := 0; i < len(rList); i++ {
@@ -180,6 +190,11 @@ type Ingredient struct {
 type Recipe struct {
 	name string
 	ingredientList []Ingredient
+	// you should also put the unit here -- bakingTempF?
 	bakingTemp int
+	// whenever you have a variable holding time you should ALWAYS put the unit
+	// into the variable name!  bakingTimeSeconds, bakingTimeMinutes, etc.  so
+	// many bugs have happened because one programmer thought it was seconds,
+	// and another thought milliseconds, or so.
 	bakingTime int
 }
