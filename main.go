@@ -18,7 +18,7 @@ func main() {
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
-				for i := 0; i < len(recipeList); i++ {
+				for i := range recipeList {
 					printRecipe(recipeList[i])
 				}
 			}
