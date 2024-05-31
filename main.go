@@ -57,7 +57,7 @@ func main() {
 				fmt.Print("Enter the baking temperature (F): ")
 				var temp int
 				fmt.Scanf("%d", &temp)
-					newRecipe.bakingTempF = temp
+				newRecipe.bakingTempF = temp
 				fmt.Print("Enter the baking time (minutes): ")
 				var time int
 				fmt.Scanf("%d", &time)
@@ -65,7 +65,13 @@ func main() {
 				recipeList = append(recipeList, newRecipe)
 			}
 			case 3: {
-				
+				fmt.Print("\nHere are your recipes:")
+				for i := range recipeList {
+					fmt.Printf("\n%v) %v", i, recipeList[i].name)
+				}
+				fmt.Print("\nEnter the recipe to edit: ")
+				var recipeToEdit int
+				fmt.Scanf("%v", recipeToEdit)
 			}
 			case 4: {
 				
@@ -78,6 +84,15 @@ func main() {
 				fmt.Println("\nThank you for using my program.")
 			}
 		}
+	}
+}
+
+func editRecipeMenu(recipe Recipe) {
+	fmt.Println(recipe)
+	choice := 10
+	for choice != 0 {
+		fmt.Println("Here are your options:\n1) Delete this recipe\n2) Remove an ingredient\n3) Edit an ingredient\n4) Edit baking time\n5) Edit baking temp")
+		fmt.Scanf("%v", choice)
 	}
 }
 
