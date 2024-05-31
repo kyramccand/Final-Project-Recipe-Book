@@ -55,11 +55,11 @@ func main() {
 				fmt.Print("Enter the baking temperature: ")
 				var temp int
 				fmt.Scanf("%d", &temp)
-					newRecipe.bakingTemp = temp
+					newRecipe.bakingTempF = temp
 				fmt.Print("Enter the baking time: ")
 				var time int
 				fmt.Scanf("%d", &time)
-				newRecipe.bakingTime = time
+				newRecipe.bakingTimeMinutes = time
 				recipeList = append(recipeList, newRecipe)
 			}
 			case 3:
@@ -92,14 +92,14 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 			if err != nil {
 				fmt.Println("failed to convert string to int")
 			}
-			rList[len(rList) - 1].bakingTemp = int(bTemp)
+			rList[len(rList) - 1].bakingTempF = int(bTemp)
 		} else if strings.Index(scanner.Text(), "Bake time: ") != -1 {
 			bTimeString := strings.Split(scanner.Text(), "Bake time: ")[1]
 			bTime, err := strconv.Atoi(bTimeString)
 			if err != nil {
 				fmt.Println("failed to convert string to int")
 			}
-			rList[len(rList) - 1].bakingTime = int(bTime)
+			rList[len(rList) - 1].bakingTimeMinutes = int(bTime)
 		} else if strings.Index(scanner.Text(), " - ") != -1 {
 			ingredientString := strings.Split(scanner.Text(), " - ")[1]
 			rList[len(rList) - 1].ingredientList = append(rList[len(rList) - 1].ingredientList, toIngredient(ingredientString))
@@ -112,7 +112,7 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 }
 
 func recipeToString(r Recipe) string {
-	s := "Name: " + r.name + "\nBake time: " + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
+	s := "Name: " + r.name + "\nBake time: " + strconv.Itoa(r.bakingTimeMinutes) + "\nBake temp: " + strconv.Itoa(r.bakingTempF) + "\nInredients:\n"
 	for i := range r.ingredientList {
 		s = s + " - " + ingredientToString(r.ingredientList[i])
 	}
@@ -125,7 +125,7 @@ func ingredientToString(i Ingredient) string {
 }
 
 func printRecipe(r Recipe) {
-	fmt.Printf("\n%v\nBake time: %v minutes\nBake temp: %v F\nInredients:\n", r.name, r.bakingTime, r.bakingTemp)
+	fmt.Printf("\n%v\nBake time: %v minutes\nBake temp: %v F\nInredients:\n", r.name, r.bakingTimeMinutes, r.bakingTempF)
 		for i := range r.ingredientList {
 		fmt.Print(" - ")
 		printIngredient(r.ingredientList[i])
@@ -179,6 +179,6 @@ type Ingredient struct {
 type Recipe struct {
 	name string
 	ingredientList []Ingredient
-	bakingTemp int
-	bakingTime int
+	bakingTempF int
+	bakingTimeMinutes int
 }
