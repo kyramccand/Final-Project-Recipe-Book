@@ -93,6 +93,14 @@ func editRecipeMenu(recipe Recipe) {
 	for choice != 0 {
 		fmt.Println("Here are your options:\n1) Delete this recipe\n2) Remove an ingredient\n3) Edit an ingredient\n4) Edit baking time\n5) Edit baking temp")
 		fmt.Scanf("%v", choice)
+		switch choice {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 0:
+		}
 	}
 }
 
