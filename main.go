@@ -127,7 +127,7 @@ func ingredientToString(i Ingredient) string {
 
 func printRecipe(r Recipe) {
 	fmt.Printf("\n%v\nBake time: %v minutes\nBake temp: %v F\nInredients:\n", r.name, r.bakingTime, r.bakingTemp)
-	for i := 0; i < len(r.ingredientList); i++ {
+		for i := range r.ingredientList {
 		fmt.Print(" - ")
 		printIngredient(r.ingredientList[i])
 	}
