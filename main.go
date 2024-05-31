@@ -120,8 +120,7 @@ func recipeToString(r Recipe) string {
 }
 
 func ingredientToString(i Ingredient) string {
-	var s string
-	s = strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name + "\n"
+	s := strconv.FormatFloat(float64(i.measure), 'f', -1, 32) + " " + i.measureUnit + " " + i.name + "\n"
 	return s
 }
 
