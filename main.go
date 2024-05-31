@@ -113,7 +113,7 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 
 func recipeToString(r Recipe) string {
 	s := "Name: " + r.name + "\nBake time: " + strconv.Itoa(r.bakingTime) + "\nBake temp: " + strconv.Itoa(r.bakingTemp) + "\nInredients:\n"
-	for i := 0; i < len(r.ingredientList); i++ {
+	for i := range r.ingredientList {
 		s = s + " - " + ingredientToString(r.ingredientList[i])
 	}
 	return s
