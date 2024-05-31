@@ -1,15 +1,51 @@
-Name: Bread
-Bake time: 0
+Name: Pecan Pie
+Bake time: 50
 Bake temp: 350
 Inredients:
- - 4 tbsp butter
- - 8 cup flour
- - 2 packet yeast
- - 1 cup cold water
- - 2 tbsp sugar
-Name: Cheescake
+ - 1 piece pie crust
+ - 1 cup sugar
+ - 3 tbsp light brown sugar
+ - 0.5 tspn salt
+ - 1 cup light corn syrup
+ - 0.75 tspn vanilla extract
+ - 0.33 cup butter
+ - 3 piece egg
+ - 1.5 cup pecan
+Name: Baked Cheescake
 Bake time: 55
-Bake temp: 350
+Bake temp: 320
 Inredients:
- - 16 oz creamcheese
- - 1 cup cream
+ - 28 squares graham cracker
+ - 8 tbsp butter
+ - 1 lb cream cheese
+ - 2 tbsp flour
+ - 1 tsp vanilla extract
+ - 0.5 cup sour cream
+ - 1.5 cup powdered sugar
+ - 4 tbsp lemon juice
+ - 3 piece egg
+Name: No-bake Cheescake
+Bake time: 0
+Bake temp: 0
+Inredients:
+ - 8 sheet graham cracker
+ - 2 tbsp butter
+ - 16 oz cream cheese
+ - 2 piece egg
+ - 0.25 tsp salt
+ - 0.5 cup sugar
+ - 0.25 tsp vanilla extract
+Name: Berry Cobbler
+Bake time: 22
+Bake temp: 375
+Inredients:
+ - 16 oz strawberry
+ - 2 cup blueberry
+ - 1 tbsp lemon juice
+ - 2 tbsp sugar
+ - 1 cup flour
+ - 1 tsp baking powder
+ - 1 tsp cinnamon
+ - 1 tsp salt
+ - 0.5 cup butter
+ - 1 cup light brown sugar

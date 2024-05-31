@@ -24,9 +24,10 @@ func main() {
 			}
 			case 2: {
 				var newRecipe Recipe
-				fmt.Print("Enter the name of the baked good: ")
+				fmt.Print("\nEnter the name of the baked good: ")
 				reader := bufio.NewReader(os.Stdin)
 				n, err := reader.ReadString('\n')
+				n = strings.Split(n, "\n")[0]
 				if err != nil {
 					fmt.Println(err)
 				}
@@ -41,32 +42,40 @@ func main() {
 					fmt.Scanf("%g %s", &m, &u)
 					reader := bufio.NewReader(os.Stdin)
 					i, err := reader.ReadString('\n')
+					i = strings.Split(i, "\n")[0] // removes the newline at the end of the string
 					if err != nil {
 						fmt.Println(err)
 					}
 					ingr := Ingredient{i, m, u}
-					if ingr.name != "\n" {
+					if ingr.name != "" {
 						ingredientCount++;
 							newRecipe.ingredientList = append(newRecipe.ingredientList, ingr)
 					} else {
 						break
 					}
 				}
-				fmt.Print("Enter the baking temperature: ")
+				fmt.Print("Enter the baking temperature (F): ")
 				var temp int
 				fmt.Scanf("%d", &temp)
 					newRecipe.bakingTempF = temp
-				fmt.Print("Enter the baking time: ")
+				fmt.Print("Enter the baking time (minutes): ")
 				var time int
 				fmt.Scanf("%d", &time)
 				newRecipe.bakingTimeMinutes = time
 				recipeList = append(recipeList, newRecipe)
 			}
-			case 3:
-			case 4:
+			case 3: {
+				
+			}
+			case 4: {
+				
+			}
+			default: {
+				fmt.Println("\nInvalid input.")
+			}
 			case 0: {
 				writeRecipesToFile(recipeList)
-				fmt.Println("Thank you for using my program.")
+				fmt.Println("\nThank you for using my program.")
 			}
 		}
 	}
