@@ -71,7 +71,8 @@ func main() {
 				}
 				fmt.Print("\nEnter the recipe to edit: ")
 				var recipeToEdit int
-				fmt.Scanf("%v", recipeToEdit)
+				fmt.Scanf("%d", &recipeToEdit)
+				editRecipeMenu(recipeList, recipeToEdit)
 			}
 			case 4: {
 				
@@ -87,18 +88,23 @@ func main() {
 	}
 }
 
-func editRecipeMenu(recipe Recipe) {
-	fmt.Println(recipe)
+func editRecipeMenu(list []Recipe, index int) {
 	choice := 10
 	for choice != 0 {
-		fmt.Println("Here are your options:\n1) Delete this recipe\n2) Remove an ingredient\n3) Edit an ingredient\n4) Edit baking time\n5) Edit baking temp")
-		fmt.Scanf("%v", choice)
+		fmt.Print("\nHere are your options:\n1) Delete this recipe\n2) Remove an ingredient\n3) Edit an ingredient\n4) Edit baking time\n5) Edit baking temp\nEnter your choice: ")
+		fmt.Scanf("%d", &choice)
 		switch choice {
-			case 1:
+			case 1: {
+				// delete the recipe?
+				for i := index; i < len(list) - 1; i++ {
+					list[i] = list[i + 1]
+				}
+			}
 			case 2:
 			case 3:
 			case 4:
 			case 5:
+			default:
 			case 0:
 		}
 	}
