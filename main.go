@@ -88,24 +88,72 @@ func main() {
 	}
 }
 
+func editIngredientMenu(list []Ingredient, index int) {
+	choice := 10
+	for choice != 0 {
+		fmt.Print("\nHere are your options:\n1) Delete this ingredient\n2) Change name\n3) Change measurement\n0) Back\nEnter your choice: ")
+		fmt.Scanf("%d", &choice)
+		switch choice {
+			case 1: {
+			  var newIngredientList []Ingredient
+				for i, ing := range list {
+					if i != index {
+						newIngredientList = append(newIngredientList, ing)
+					}
+					list = newIngredientList // not sure if this just disapears after the funciton ends
+				}
+				return
+			}
+			case 2: {
+				fmt.Print("\nEnter the new name: ")
+				var newName string
+				fmt.Scanf("%v", &newName)
+				list[index].name = newName
+			}
+			case 3: {
+				fmt.Print("\nEnter the new measurement: ")
+				var newMeasure float32
+				var newUnit string
+				fmt.Scanf("%g %v", &newMeasure, &newUnit)
+				list[index].measure = newMeasure
+				list[index].measureUnit = newUnit
+			}
+			default:
+				fmt.Println("\nInvalid input.")
+			case 0:
+		}
+	}
+}
+
 func editRecipeMenu(list []Recipe, index int) {
 	choice := 10
 	for choice != 0 {
-		fmt.Print("\nHere are your options:\n1) Delete this recipe\n2) Remove an ingredient\n3) Edit an ingredient\n4) Edit baking time\n5) Edit baking temp\nEnter your choice: ")
+		fmt.Print("\nHere are your options:\n1) Delete this recipe\n2) Edit an ingredient\n3) Edit baking time\n4) Edit baking temp\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
 				// delete the recipe?
 				for i := index; i < len(list) - 1; i++ {
 					list[i] = list[i + 1]
+					return
 				}
 			}
-			case 2:
+			case 2: {
+				fmt.Println("\nHere are your ingredients:")
+				for i, ingredient := range list[index].ingredientList {
+					fmt.Printf("%v) %s\n", i, ingredient.name)
+				}
+				fmt.Print("Enter the ingredient to edit: ")
+				var ingredientToEdit int
+				fmt.Scanf("%d", &ingredientToEdit)
+				editIngredientMenu(list[index].ingredientList, ingredientToEdit)
+			}
 			case 3:
 			case 4:
-			case 5:
 			default:
+				fmt.Println("\nInvalid input.")
 			case 0:
+				return
 		}
 	}
 }
