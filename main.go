@@ -72,7 +72,7 @@ func main() {
 				fmt.Print("\nEnter the recipe to edit: ")
 				var recipeToEdit int
 				fmt.Scanf("%d", &recipeToEdit)
-				editRecipeMenu(recipeList, recipeToEdit)
+				recipeList = editRecipeMenu(recipeList, recipeToEdit)
 			}
 			case 4: {
 				
@@ -125,18 +125,16 @@ func editIngredientMenu(list []Ingredient, index int) {
 	}
 }
 
-func editRecipeMenu(list []Recipe, index int) {
+func editRecipeMenu(list []Recipe, index int) []Recipe {
 	choice := 10
 	for choice != 0 {
 		fmt.Print("\nHere are your options:\n1) Delete this recipe\n2) Edit an ingredient\n3) Edit baking time\n4) Edit baking temp\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
+				newRecipeList := append(list[0:index], list[index+1:]...)
 				// delete the recipe?
-				for i := index; i < len(list) - 1; i++ {
-					list[i] = list[i + 1]
-					return
-				}
+				return newRecipeList
 			}
 			case 2: {
 				fmt.Println("\nHere are your ingredients:")
@@ -153,9 +151,10 @@ func editRecipeMenu(list []Recipe, index int) {
 			default:
 				fmt.Println("\nInvalid input.")
 			case 0:
-				return
+				return list
 		}
 	}
+	return list
 }
 
 func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.org/how-to-read-a-file-line-by-line-to-string-in-golang/
