@@ -141,8 +141,18 @@ func editRecipeMenu(list []Recipe, index int) []Recipe {
 				fmt.Scanf("%d", &ingredientToEdit)
 				editIngredientMenu(list[index].ingredientList, ingredientToEdit - 1)
 			}
-			case 3:
-			case 4:
+			case 3: {
+				fmt.Print("\nEnter the new baking time (minutes): ")
+				var newBakingTime int
+				fmt.Scanf("%d", &newBakingTime)
+				list[index].bakingTimeMinutes = newBakingTime
+			}
+			case 4: {
+				fmt.Print("\nEnter the new baking temperature (F): ")
+				var newBakingTemp int
+				fmt.Scanf("%d", &newBakingTemp)
+				list[index].bakingTempF = newBakingTemp
+			}
 			default:
 				fmt.Println("\nInvalid input.")
 			case 0:
