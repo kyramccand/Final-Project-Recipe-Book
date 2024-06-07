@@ -14,7 +14,7 @@ func main() {
 	fmt.Println("Welcome to the Recipe Book!")
 	choice := 10
 	for choice != 0 {
-		fmt.Print("\nHere are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) See what you can bake\n0) Quit\nEnter your choice: ")
+		fmt.Print("\nHere are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) Select a Recipe\n0) Quit\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
@@ -75,7 +75,31 @@ func main() {
 				recipeList = editRecipeMenu(recipeList, recipeToEdit - 1)
 			}
 			case 4: {
-				
+				fmt.Println("\nFirst, enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
+				fmt.Println("\nEnter your ingredients:")
+				var specialIngredients []string
+				for {
+					fmt.Print(" - ")
+					reader := bufio.NewReader(os.Stdin)
+					ingredientName, err := reader.ReadString('\n')
+					ingredientName = strings.Split(ingredientName, "\n")[0] // removes the newline at the end of the string
+					if err != nil {
+						fmt.Println(err)
+					}
+					if ingredientName != "" {
+						specialIngredients = append(specialIngredients, ingredientName)
+					} else {
+						break
+					}
+				}
+				for r := range recipeList {
+					canBake := true
+					for i := range recipeList[r].ingredientList {
+						if specialIngredients.count(recipeList[r].ingredientList[i].name) != -1 {
+							canBake = false
+						}
+					}
+				}
 			}
 			default: {
 				fmt.Println("\nInvalid input.")
