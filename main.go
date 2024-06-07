@@ -66,13 +66,13 @@ func main() {
 			}
 			case 3: {
 				fmt.Print("\nHere are your recipes:")
-				for i := range recipeList {
-					fmt.Printf("\n%v) %v", i, recipeList[i].name)
+				for i, recipe := range recipeList {
+					fmt.Printf("\n%v) %v", i + 1, recipe.name)
 				}
 				fmt.Print("\nEnter the recipe to edit: ")
 				var recipeToEdit int
 				fmt.Scanf("%d", &recipeToEdit)
-				recipeList = editRecipeMenu(recipeList, recipeToEdit)
+				recipeList = editRecipeMenu(recipeList, recipeToEdit - 1)
 			}
 			case 4: {
 				
@@ -88,21 +88,15 @@ func main() {
 	}
 }
 
-func editIngredientMenu(list []Ingredient, index int) {
+func editIngredientMenu(list []Ingredient, index int) []Ingredient {
 	choice := 10
 	for choice != 0 {
 		fmt.Print("\nHere are your options:\n1) Delete this ingredient\n2) Change name\n3) Change measurement\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
-			  var newIngredientList []Ingredient
-				for i, ing := range list {
-					if i != index {
-						newIngredientList = append(newIngredientList, ing)
-					}
-					list = newIngredientList // not sure if this just disapears after the funciton ends
-				}
-				return
+			  list = append(list[0:index], list[index+1:]...)
+				return list
 			}
 			case 2: {
 				fmt.Print("\nEnter the new name: ")
@@ -123,6 +117,7 @@ func editIngredientMenu(list []Ingredient, index int) {
 			case 0:
 		}
 	}
+	return list
 }
 
 func editRecipeMenu(list []Recipe, index int) []Recipe {
@@ -132,19 +127,19 @@ func editRecipeMenu(list []Recipe, index int) []Recipe {
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
-				newRecipeList := append(list[0:index], list[index+1:]...)
+				list = append(list[0:index], list[index+1:]...)
 				// delete the recipe?
-				return newRecipeList
+				return list
 			}
 			case 2: {
 				fmt.Println("\nHere are your ingredients:")
 				for i, ingredient := range list[index].ingredientList {
-					fmt.Printf("%v) %s\n", i, ingredient.name)
+					fmt.Printf("%v) %s\n", i + 1, ingredient.name)
 				}
 				fmt.Print("Enter the ingredient to edit: ")
 				var ingredientToEdit int
 				fmt.Scanf("%d", &ingredientToEdit)
-				editIngredientMenu(list[index].ingredientList, ingredientToEdit)
+				editIngredientMenu(list[index].ingredientList, ingredientToEdit - 1)
 			}
 			case 3:
 			case 4:
