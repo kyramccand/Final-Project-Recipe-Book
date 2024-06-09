@@ -92,12 +92,18 @@ func main() {
 						break
 					}
 				}
+				defaultIngredients := []string{"egg", "butter", "flour", "sugar", "light brown sugar", "salt", "vanilla extract", "baking soda", "baking powder", "lemon juice"}
+				var canBakeList []Recipe
 				for r := range recipeList {
 					canBake := true
 					for i := range recipeList[r].ingredientList {
-						if specialIngredients.count(recipeList[r].ingredientList[i].name) != -1 {
-							canBake = false
-						}
+    				if !contains(specialIngredients, recipeList[r].ingredientList[i].name) && !contains(defaultIngredients, recipeList[r].ingredientList[i].name){
+        			canBake = false
+    				}
+					}
+					if canBake {
+						canBakeList = append(canBakeList, recipeList[r])
+						fmt.Printf("You can bake %s.", recipeList[r].name)
 					}
 				}
 			}
@@ -223,6 +229,15 @@ func getRecipeList() []Recipe { // read line by line https://www.geeksforgeeks.o
 	}
 	file.Close()
 	return rList
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
 
 func recipeToString(r Recipe) string {

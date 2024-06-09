@@ -49,3 +49,16 @@ Inredients:
  - 1 tsp salt
  - 0.5 cup butter
  - 1 cup light brown sugar
+Name: Apple Cake
+Bake time: 40
+Bake temp: 350
+Inredients:
+ - 1 cup flour
+ - 1 tsp baking powder
+ - 0.25 tsp vanilla extract
+ - 0.5 cup butter
+ - 0.66 cup sugar
+ - 2 piece egg
+ - 1 tsp vanilla extract
+ - 3 tbsp lemon juice
+ - 2 piece apple
