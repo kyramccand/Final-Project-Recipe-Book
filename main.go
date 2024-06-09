@@ -75,37 +75,8 @@ func main() {
 				recipeList = editRecipeMenu(recipeList, recipeToEdit - 1)
 			}
 			case 4: {
-				fmt.Println("\nFirst, enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
-				fmt.Println("\nEnter your ingredients:")
-				var specialIngredients []string
-				for {
-					fmt.Print(" - ")
-					reader := bufio.NewReader(os.Stdin)
-					ingredientName, err := reader.ReadString('\n')
-					ingredientName = strings.Split(ingredientName, "\n")[0] // removes the newline at the end of the string
-					if err != nil {
-						fmt.Println(err)
-					}
-					if ingredientName != "" {
-						specialIngredients = append(specialIngredients, ingredientName)
-					} else {
-						break
-					}
-				}
-				defaultIngredients := []string{"egg", "butter", "flour", "sugar", "light brown sugar", "salt", "vanilla extract", "baking soda", "baking powder", "lemon juice"}
-				var canBakeList []Recipe
-				for r := range recipeList {
-					canBake := true
-					for i := range recipeList[r].ingredientList {
-    				if !contains(specialIngredients, recipeList[r].ingredientList[i].name) && !contains(defaultIngredients, recipeList[r].ingredientList[i].name){
-        			canBake = false
-    				}
-					}
-					if canBake {
-						canBakeList = append(canBakeList, recipeList[r])
-						fmt.Printf("You can bake %s.", recipeList[r].name)
-					}
-				}
+				selectedRecipe := selectRecipe(recipeList)
+				fmt.Println(selectedRecipe)
 			}
 			default: {
 				fmt.Println("\nInvalid input.")
@@ -116,6 +87,47 @@ func main() {
 			}
 		}
 	}
+}
+
+func selectRecipe(list []Recipe) Recipe {
+	fmt.Println("\nFirst, enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
+	fmt.Println("\nEnter your ingredients:")
+	var specialIngredients []string
+	for {
+		fmt.Print(" - ")
+		reader := bufio.NewReader(os.Stdin)
+		ingredientName, err := reader.ReadString('\n')
+		ingredientName = strings.Split(ingredientName, "\n")[0] // removes the newline at the end of the string
+		if err != nil {
+			fmt.Println(err)
+		}
+		if ingredientName != "" {
+			specialIngredients = append(specialIngredients, ingredientName)
+		} else {
+			break
+		}
+	}
+	defaultIngredients := []string{"egg", "butter", "flour", "sugar", "light brown sugar", "salt", "vanilla extract", "baking soda", "baking powder", "lemon juice"}
+	var canBakeList []Recipe
+	for r := range list {
+		canBake := true
+		for i := range list[r].ingredientList {
+			if !contains(specialIngredients, list[r].ingredientList[i].name) && !contains(defaultIngredients, list[r].ingredientList[i].name){
+				canBake = false
+			}
+		}
+		if canBake {
+			canBakeList = append(canBakeList, list[r])
+		}
+	}
+	fmt.Println("Here are your options:")
+	for i, recipe := range canBakeList {
+		fmt.Printf("%v) %s\n", i + 1, recipe.name)
+	}
+	fmt.Print("Enter your choice: ")
+	var selectedRecipeIndex int
+	fmt.Scanf("%d", &selectedRecipeIndex)
+	return canBakeList[selectedRecipeIndex - 1]
 }
 
 func editIngredientMenu(list []Ingredient, index int) []Ingredient {
