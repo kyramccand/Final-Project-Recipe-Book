@@ -11,20 +11,22 @@ import (
 
 func main() {
 	recipeList := getRecipeList()
-	fmt.Println("Welcome to the Recipe Book!")
+	fmt.Println("Welcome to the Recipe Book!\n")
 	choice := 10
 	for choice != 0 {
-		fmt.Print("\nHere are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) Select a Recipe\n0) Quit\nEnter your choice: ")
+		fmt.Print("Here are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) Select a Recipe\n0) Quit\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
+		clear()
 		switch choice {
 			case 1: {
 				for i := range recipeList {
 					printRecipe(recipeList[i])
 				}
+				pressEnterToContinue()
 			}
 			case 2: {
 				var newRecipe Recipe
-				fmt.Print("\nEnter the name of the baked good: ")
+				fmt.Print("Enter the name of the baked good: ")
 				reader := bufio.NewReader(os.Stdin)
 				n, err := reader.ReadString('\n')
 				n = strings.Split(n, "\n")[0]
@@ -32,8 +34,8 @@ func main() {
 					fmt.Println(err)
 				}
 				newRecipe.name = n
-				fmt.Println("Enter the ingredients (measurement unit ingredient):");
-				ingredientCount := 1;
+				fmt.Println("\nEnter the ingredients (measurement unit ingredient):");
+				ingredientCount := 1
 				for {
 					var m float32
 					var u string
@@ -58,11 +60,12 @@ func main() {
 				var temp int
 				fmt.Scanf("%d", &temp)
 				newRecipe.bakingTempF = temp
-				fmt.Print("Enter the baking time (minutes): ")
+				fmt.Print("\nEnter the baking time (minutes): ")
 				var time int
 				fmt.Scanf("%d", &time)
 				newRecipe.bakingTimeMinutes = time
 				recipeList = append(recipeList, newRecipe)
+				clear()
 			}
 			case 3: {
 				fmt.Print("\nHere are your recipes:")
@@ -112,6 +115,17 @@ func bake(recipe Recipe) {
 	}
 }
 
+func clear() {
+	fmt.Print("\033[H\033[2J")
+}
+
+func pressEnterToContinue() {
+	fmt.Println("\n(Press ENTER to continue)")
+	var cont string
+	fmt.Scanln(&cont)
+	clear()
+}
+
 func selectRecipe(list []Recipe) Recipe {
 	fmt.Println("\nFirst, enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
 	fmt.Println("\nEnter your ingredients:")
@@ -156,7 +170,7 @@ func selectRecipe(list []Recipe) Recipe {
 func editIngredientMenu(list []Ingredient, index int) []Ingredient {
 	choice := 10
 	for choice != 0 {
-		fmt.Print("\nHere are your options:\n1) Delete this ingredient\n2) Change name\n3) Change measurement\n0) Back\nEnter your choice: ")
+		fmt.Print("Here are your options:\n1) Delete this ingredient\n2) Change name\n3) Change measurement\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
@@ -188,7 +202,7 @@ func editIngredientMenu(list []Ingredient, index int) []Ingredient {
 func editRecipeMenu(list []Recipe, index int) []Recipe {
 	choice := 10
 	for choice != 0 {
-		fmt.Print("\nHere are your options:\n1) Delete this recipe\n2) Edit an ingredient\n3) Edit baking time\n4) Edit baking temp\n0) Back\nEnter your choice: ")
+		fmt.Print("Here are your options:\n1) Delete this recipe\n2) Edit an ingredient\n3) Edit baking time\n4) Edit baking temp\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		switch choice {
 			case 1: {
