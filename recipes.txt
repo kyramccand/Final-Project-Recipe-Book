@@ -15,14 +15,14 @@ Name: Baked Cheescake
 Bake time: 55
 Bake temp: 320
 Inredients:
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
- - 3 piece egg
+ - 28 squares graham cracker
+ - 8 tbsp butter
+ - 1 lb cream cheese
+ - 2 tbsp flour
+ - 1 tsp vanilla extract
+ - 0.5 cup sour cream
+ - 1.5 cup powdered sugar
+ - 4 tbsp lemon juice
  - 3 piece egg
 Name: No-bake Cheescake
 Bake time: 0

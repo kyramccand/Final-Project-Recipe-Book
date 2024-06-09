@@ -77,7 +77,6 @@ func main() {
 			case 4: {
 				selectedRecipe := selectRecipe(recipeList)
 				bake(selectedRecipe)
-				// printRecipe(selectedRecipe)
 			}
 			default: {
 				fmt.Println("\nInvalid input.")
@@ -96,9 +95,10 @@ func bake(recipe Recipe) {
 	}
 	fmt.Printf("\nMix the ingredients. Enter the index of each ingredient when you add it.\n")
 	fmt.Println("Here are the remaining ingredients:")
-	remainingIngredients := recipe.ingredientList
+	remainingIngredients := make([]Ingredient, len(recipe.ingredientList))
+	copy(remainingIngredients, recipe.ingredientList)
 	for len(remainingIngredients) != 0 {
-		for i, ingredient := range recipe.ingredientList {
+		for i, ingredient := range remainingIngredients {
 			fmt.Printf("%v) ", i + 1)
 			printIngredient(ingredient)
 		}
@@ -106,6 +106,9 @@ func bake(recipe Recipe) {
 		var addedIngredient int
 		fmt.Scanf("%d", &addedIngredient)
 		remainingIngredients = append(remainingIngredients[0:addedIngredient - 1], remainingIngredients[addedIngredient:]...)
+	}
+	if recipe.bakingTimeMinutes != 0 {
+		fmt.Printf("\nBake at %dF for %d minutes.\n", recipe.bakingTempF, recipe.bakingTimeMinutes)
 	}
 }
 
