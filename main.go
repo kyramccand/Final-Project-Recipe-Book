@@ -14,7 +14,7 @@ func main() {
 	fmt.Println("Welcome to the Recipe Book!\n")
 	choice := 10
 	for choice != 0 {
-		fmt.Print("Here are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) Select a Recipe\n0) Quit\nEnter your choice: ")
+		fmt.Print("Here are your options:\n1) View your recipies\n2) Add a recipe\n3) Edit a recipe\n4) Select a Recipe\n0) Save and quit\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
 		clear()
 		switch choice {
@@ -34,7 +34,7 @@ func main() {
 					fmt.Println(err)
 				}
 				newRecipe.name = n
-				fmt.Println("\nEnter the ingredients (measurement unit ingredient):");
+				fmt.Println("\nEnter the ingredients (measurement unit ingredient):")
 				ingredientCount := 1
 				for {
 					var m float32
@@ -50,7 +50,7 @@ func main() {
 					}
 					ingr := Ingredient{i, m, u}
 					if ingr.name != "" {
-						ingredientCount++;
+						ingredientCount++
 							newRecipe.ingredientList = append(newRecipe.ingredientList, ingr)
 					} else {
 						break
@@ -68,39 +68,49 @@ func main() {
 				clear()
 			}
 			case 3: {
-				fmt.Print("\nHere are your recipes:")
+				fmt.Print("Here are your recipes:")
 				for i, recipe := range recipeList {
 					fmt.Printf("\n%v) %v", i + 1, recipe.name)
 				}
 				fmt.Print("\nEnter the recipe to edit: ")
 				var recipeToEdit int
 				fmt.Scanf("%d", &recipeToEdit)
+				clear()
 				recipeList = editRecipeMenu(recipeList, recipeToEdit - 1)
 			}
 			case 4: {
 				selectedRecipe := selectRecipe(recipeList)
-				bake(selectedRecipe)
+				if selectedRecipe.name != "" {
+					bake(selectedRecipe)
+				}
 			}
 			default: {
 				fmt.Println("\nInvalid input.")
 			}
 			case 0: {
 				writeRecipesToFile(recipeList)
-				fmt.Println("\nThank you for using my program.")
+				fmt.Println("Thank you for using my program.")
 			}
 		}
 	}
 }
 
 func bake(recipe Recipe) {
+	fmt.Print("What factor would you like to multiply the recipe by?: ")
+	var scale float32
+	fmt.Scanf("%f", &scale)
+	clear()
+	for i := range recipe.ingredientList {
+		recipe.ingredientList[i].measure = recipe.ingredientList[i].measure * scale
+	}
 	if recipe.bakingTimeMinutes != 0 {
-		fmt.Printf("\nPreheat the oven to %dF.\n", recipe.bakingTempF)
+		fmt.Printf("Preheat the oven to %dF.\n", recipe.bakingTempF)
 	}
 	fmt.Printf("\nMix the ingredients. Enter the index of each ingredient when you add it.\n")
-	fmt.Println("Here are the remaining ingredients:")
 	remainingIngredients := make([]Ingredient, len(recipe.ingredientList))
 	copy(remainingIngredients, recipe.ingredientList)
 	for len(remainingIngredients) != 0 {
+		fmt.Println("Here are the remaining ingredients:")
 		for i, ingredient := range remainingIngredients {
 			fmt.Printf("%v) ", i + 1)
 			printIngredient(ingredient)
@@ -108,10 +118,17 @@ func bake(recipe Recipe) {
 		fmt.Print("Enter the ingredient you added: ")
 		var addedIngredient int
 		fmt.Scanf("%d", &addedIngredient)
+		clear()
 		remainingIngredients = append(remainingIngredients[0:addedIngredient - 1], remainingIngredients[addedIngredient:]...)
 	}
 	if recipe.bakingTimeMinutes != 0 {
-		fmt.Printf("\nBake at %dF for %d minutes.\n", recipe.bakingTempF, recipe.bakingTimeMinutes)
+		fmt.Printf("Bake at %dF for %d minutes.\n", recipe.bakingTempF, recipe.bakingTimeMinutes)
+		pressEnterToContinue()
+	}
+	fmt.Println("Enjoy!")
+	pressEnterToContinue()
+	for i := range recipe.ingredientList {
+		recipe.ingredientList[i].measure = recipe.ingredientList[i].measure * 1/scale
 	}
 }
 
@@ -127,7 +144,7 @@ func pressEnterToContinue() {
 }
 
 func selectRecipe(list []Recipe) Recipe {
-	fmt.Println("\nFirst, enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
+	fmt.Println("Enter the ingredients that you have, not including eggs, butter, flour, sugar, light brown sugar, salt, vanilla extract, baking soda, baking powder, or lemon juice. We assume that you already have these ingredients.")
 	fmt.Println("\nEnter your ingredients:")
 	var specialIngredients []string
 	for {
@@ -141,6 +158,7 @@ func selectRecipe(list []Recipe) Recipe {
 		if ingredientName != "" {
 			specialIngredients = append(specialIngredients, ingredientName)
 		} else {
+			clear()
 			break
 		}
 	}
@@ -157,6 +175,13 @@ func selectRecipe(list []Recipe) Recipe {
 			canBakeList = append(canBakeList, list[r])
 		}
 	}
+	if len(canBakeList) == 0 {
+		fmt.Println("You can't bake anything.")
+		pressEnterToContinue()
+		var noneRecipe Recipe
+		noneRecipe.name = ""
+		return noneRecipe
+	}
 	fmt.Println("Here are your options:")
 	for i, recipe := range canBakeList {
 		fmt.Printf("%v) %s\n", i + 1, recipe.name)
@@ -164,6 +189,7 @@ func selectRecipe(list []Recipe) Recipe {
 	fmt.Print("Enter your choice: ")
 	var selectedRecipeIndex int
 	fmt.Scanf("%d", &selectedRecipeIndex)
+	clear()
 	return canBakeList[selectedRecipeIndex - 1]
 }
 
@@ -172,22 +198,25 @@ func editIngredientMenu(list []Ingredient, index int) []Ingredient {
 	for choice != 0 {
 		fmt.Print("Here are your options:\n1) Delete this ingredient\n2) Change name\n3) Change measurement\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
+		clear()
 		switch choice {
 			case 1: {
 			  list = append(list[0:index], list[index + 1:]...)
 				return list
 			}
 			case 2: {
-				fmt.Print("\nEnter the new name: ")
+				fmt.Print("Enter the new name: ")
 				var newName string
 				fmt.Scanf("%v", &newName)
+				clear()
 				list[index].name = newName
 			}
 			case 3: {
-				fmt.Print("\nEnter the new measurement: ")
+				fmt.Print("Enter the new measurement: ")
 				var newMeasure float32
 				var newUnit string
 				fmt.Scanf("%g %v", &newMeasure, &newUnit)
+				clear()
 				list[index].measure = newMeasure
 				list[index].measureUnit = newUnit
 			}
@@ -204,6 +233,7 @@ func editRecipeMenu(list []Recipe, index int) []Recipe {
 	for choice != 0 {
 		fmt.Print("Here are your options:\n1) Delete this recipe\n2) Edit an ingredient\n3) Edit baking time\n4) Edit baking temp\n0) Back\nEnter your choice: ")
 		fmt.Scanf("%d", &choice)
+		clear()
 		switch choice {
 			case 1: {
 				list = append(list[0:index], list[index + 1:]...)
@@ -211,29 +241,32 @@ func editRecipeMenu(list []Recipe, index int) []Recipe {
 				return list
 			}
 			case 2: {
-				fmt.Println("\nHere are your ingredients:")
+				fmt.Println("Here are your ingredients:")
 				for i, ingredient := range list[index].ingredientList {
 					fmt.Printf("%v) %s\n", i + 1, ingredient.name)
 				}
 				fmt.Print("Enter the ingredient to edit: ")
 				var ingredientToEdit int
 				fmt.Scanf("%d", &ingredientToEdit)
+				clear()
 				editIngredientMenu(list[index].ingredientList, ingredientToEdit - 1)
 			}
 			case 3: {
-				fmt.Print("\nEnter the new baking time (minutes): ")
+				fmt.Print("Enter the new baking time (minutes): ")
 				var newBakingTime int
 				fmt.Scanf("%d", &newBakingTime)
+				clear()
 				list[index].bakingTimeMinutes = newBakingTime
 			}
 			case 4: {
-				fmt.Print("\nEnter the new baking temperature (F): ")
+				fmt.Print("Enter the new baking temperature (F): ")
 				var newBakingTemp int
 				fmt.Scanf("%d", &newBakingTemp)
+				clear()
 				list[index].bakingTempF = newBakingTemp
 			}
 			default:
-				fmt.Println("\nInvalid input.")
+				fmt.Println("Invalid input.")
 			case 0:
 				return list
 		}
